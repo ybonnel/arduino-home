@@ -9,7 +9,8 @@
 DHT dht(DHTPIN, DHTTYPE);
 
 #define SENSOR_NUM 1
-#define DELAY_BETWEEN_MESURE 30000
+#define DELAY_BETWEEN_MESURE 2000
+#define DELAY_BETWEEN_SEND 1000
 
 
 void setup()
@@ -27,7 +28,9 @@ void setup()
 void sendMessageOverRF(String type, int numero, int value) {
   digitalWrite(13, HIGH);
   char msg[30];
-  sprintf(msg, "temp %2d %d", numero, value);
+  char typeChar[sizeof(type)];
+  type.toCharArray(typeChar, sizeof(typeChar));
+  sprintf(msg, "%s %02d %d", typeChar, numero, value);
   vw_send((uint8_t *)msg, strlen(msg));
   vw_wait_tx();
   digitalWrite(13, LOW);
@@ -35,6 +38,7 @@ void sendMessageOverRF(String type, int numero, int value) {
 
 void sendMessage(float humidity, float temp) {
   sendMessageOverRF("temp", SENSOR_NUM, (int)(temp * 100));
+  delay(DELAY_BETWEEN_SEND);
   sendMessageOverRF("humi", SENSOR_NUM, (int)(humidity * 100));
 }
 

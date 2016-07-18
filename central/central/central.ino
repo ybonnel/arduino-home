@@ -4,8 +4,8 @@
 
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
-#define NB_TEMP_SENSOR 3
-String tempLabel[] = { "Chbre 1", "Chbre 2", "Salon" };
+#define NB_TEMP_SENSOR 1
+String tempLabel[] = { "Proto"};
 
 typedef struct {
   String type;
@@ -18,7 +18,7 @@ typedef struct {
   float humidity;
 } SensorValue;
 
-SensorValue lastValues[] = { { -1, -1}, { -1, -1}, { -1, -1} };
+SensorValue lastValues[] = { { -1, -1}};
 
 
 byte deg[8] = {
@@ -56,12 +56,16 @@ SensorData decodeMessage(uint8_t* buf, uint8_t buflen) {
     sensorData.type += (char)(buf[index]);
     index++;
   }
+  index++;
+
 
   String numero = "";
   while (index < buflen && ((char)(buf[index])) != ' ') {
     numero += (char)(buf[index]);
     index++;
   }
+  
+  index++;
   sensorData.numero = numero.toInt();
 
   String value = "";

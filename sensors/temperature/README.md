@@ -6,7 +6,7 @@
 
 ## The code
 
-```
+```c
 #include <VirtualWire.h>
 #include <DHT.h>
 
